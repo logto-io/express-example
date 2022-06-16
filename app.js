@@ -6,8 +6,9 @@ const logger = require("morgan");
 const session = require("express-session");
 
 const indexRouter = require("./routes/index");
+const userRouter = require("./routes/user");
 const { getSignInUrl, handleSignIn } = require("./logto");
-const auth = require("./auth");
+const withAuth = require("./auth");
 const { decodeIdToken } = require("@logto/js");
 
 const app = express();
@@ -22,9 +23,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(session({ secret: "keyboard cat", cookie: { maxAge: 60000 } }));
-app.use(auth());
 
-app.use("/", indexRouter);
+app.use("/", withAuth({ requireAuth: false }), indexRouter);
+app.use("/user", withAuth(), userRouter);
 app.get("/sign-in", async (req, res) => {
   const { redirectUri, codeVerifier, state, signInUri } = await getSignInUrl();
   req.session.signIn = { codeVerifier, state, redirectUri };

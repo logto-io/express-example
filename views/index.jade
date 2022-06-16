@@ -2,4 +2,7 @@ extends layout
 
 block content
   h1 Hello logto
-  p userId: #{userId}
+  if auth
+    p: a(href="/user") Go to profile
+  else
+    p: a(href="/sign-in") Click here to sign in
