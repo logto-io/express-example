@@ -19,8 +19,8 @@ const withAuth =
             exipresAt: response.expiresIn + Date.now(),
             idToken: decodeIdToken(response.idToken),
           };
-        } catch (e) {
-          console.error(e);
+        } catch {
+          // Exchange failed, redirect to sign in
           res.redirect("/sign-in");
           return;
         }

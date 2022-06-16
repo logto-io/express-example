@@ -24,17 +24,25 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(session({ secret: "keyboard cat", cookie: { maxAge: 60000 } }));
 
-app.use("/", withAuth({ requireAuth: false }), indexRouter);
-app.use("/user", withAuth(), userRouter);
+app.get("/", withAuth({ requireAuth: false }), (req, res, next) => {
+  res.render("index", { auth: Boolean(req.auth) });
+});
+
+app.get("/user", withAuth(), (req, res, next) => {
+  res.render("user", { userId: req.auth });
+});
+
 app.get("/sign-in", async (req, res) => {
   const { redirectUri, codeVerifier, state, signInUri } = await getSignInUrl();
   req.session.signIn = { codeVerifier, state, redirectUri };
   res.redirect(signInUri);
 });
+
 app.get("/sign-out", (req, res) => {
   req.session.tokens = null;
   res.send("Sign out successful");
 });
+
 app.get("/callback", async (req, res) => {
   if (!req.session.signIn) {
     res.send("Bad request.");
