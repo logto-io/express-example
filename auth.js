@@ -16,7 +16,7 @@ const withAuth =
           const response = await refreshTokens(req.session.tokens.refreshToken);
           req.session.tokens = {
             ...response,
-            exipresAt: response.expiresIn + Date.now(),
+            expiresAt: response.expiresIn + Date.now(),
             idToken: decodeIdToken(response.idToken),
           };
         } catch {

@@ -55,7 +55,7 @@ app.get("/callback", async (req, res) => {
   );
   req.session.tokens = {
     ...response,
-    exipresAt: response.expiresIn + Date.now(),
+    expiresAt: response.expiresIn + Date.now(),
     idToken: decodeIdToken(response.idToken),
   };
   req.session.signIn = null;
