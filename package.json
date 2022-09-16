@@ -13,7 +13,7 @@
     "express-session": "^1.17.3",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "jose": "^4.8.1",
+    "jose": "^4.9.2",
     "js-base64": "^3.7.2",
     "morgan": "~1.9.1",
     "node-fetch": "2"
